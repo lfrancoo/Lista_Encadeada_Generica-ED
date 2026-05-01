@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lista_Encadeada_Generica-ED:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lista_Encadeada_Generica_ED_jar</output-path>
+    <root id="archive" name="Lista_Encadeada_Generica-ED.jar">
+      <element id="module-output" name="Lista_Encadeada_Generica-ED" />
+    </root>
+  </artifact>
+</component>
