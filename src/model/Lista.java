@@ -1,11 +1,12 @@
 package model;
 
 public class Lista<T> {
-
-    No<T> primeiro;
+    private No<T> primeiro;
+    private int tamanho;
 
     public Lista() {
         primeiro = null;
+        tamanho = 0;
     }
 
     public boolean isEmpty() {
@@ -13,36 +14,26 @@ public class Lista<T> {
     }
 
     public int size() {
-        int cont = 0;
-        No<T> auxiliar = primeiro;
+        return tamanho;
+    }
 
-        while (auxiliar != null) {
-            cont++;
-            auxiliar = auxiliar.proximo;
-        }
-
-        return cont;
+    public void clean() {
+        primeiro = null;
+        tamanho = 0;
     }
 
     private No<T> getNo(int pos) throws Exception {
         if (isEmpty()) {
             throw new Exception("Lista Vazia");
         }
-
-        int tamanho = size();
-
         if (pos < 0 || pos >= tamanho) {
             throw new Exception("Posição Inválida");
         }
 
         No<T> auxiliar = primeiro;
-        int cont = 0;
-
-        while (cont < pos) {
+        for (int i = 0; i < pos; i++) {
             auxiliar = auxiliar.proximo;
-            cont++;
         }
-
         return auxiliar;
     }
 
@@ -50,6 +41,7 @@ public class Lista<T> {
         No<T> elemento = new No<>(valor);
         elemento.proximo = primeiro;
         primeiro = elemento;
+        tamanho++;
     }
 
     public void addLast(T valor) throws Exception {
@@ -57,21 +49,16 @@ public class Lista<T> {
             addFirst(valor);
             return;
         }
-
         No<T> elemento = new No<>(valor);
-
-        No<T> ultimo = getNo(size() - 1);
+        No<T> ultimo = getNo(tamanho - 1);
         ultimo.proximo = elemento;
+        tamanho++;
     }
 
     public void add(T valor, int posicao) throws Exception {
-
-        int tamanho = size();
-
         if (posicao < 0 || posicao > tamanho) {
             throw new Exception("Posição inválida");
         }
-
         if (posicao == 0) {
             addFirst(valor);
         } else if (posicao == tamanho) {
@@ -79,9 +66,9 @@ public class Lista<T> {
         } else {
             No<T> elemento = new No<>(valor);
             No<T> anterior = getNo(posicao - 1);
-
             elemento.proximo = anterior.proximo;
             anterior.proximo = elemento;
+            tamanho++;
         }
     }
 
@@ -89,57 +76,62 @@ public class Lista<T> {
         if (isEmpty()) {
             throw new Exception("Lista Vazia");
         }
-
         primeiro = primeiro.proximo;
+        tamanho--;
     }
 
     public void removeLast() throws Exception {
         if (isEmpty()) {
             throw new Exception("Lista Vazia");
         }
-
-        int tamanho = size();
-
         if (tamanho == 1) {
-            removeFirst();
+            primeiro = null;
+            tamanho = 0;
         } else {
             No<T> penultimo = getNo(tamanho - 2);
             penultimo.proximo = null;
+            tamanho--;
         }
     }
 
     public void remove(int pos) throws Exception {
-
-        int tamanho = size();
-
         if (pos < 0 || pos >= tamanho) {
             throw new Exception("Posição inválida");
         }
-
         if (pos == 0) {
             removeFirst();
         } else if (pos == tamanho - 1) {
             removeLast();
         } else {
             No<T> anterior = getNo(pos - 1);
-            No<T> atual = getNo(pos);
-
+            No<T> atual = anterior.proximo;
             anterior.proximo = atual.proximo;
+            tamanho--;
         }
     }
 
     public T get(int pos) throws Exception {
-
-        if (isEmpty()) {
-            throw new Exception("Lista Vazia");
-        }
-
-        int tamanho = size();
-
-        if (pos < 0 || pos >= tamanho) {
-            throw new Exception("Posição inválida");
-        }
-
         return getNo(pos).dado;
+    }
+
+    /**
+     * 🔥 MÉTODO imprimir() - Imprime conteúdo da lista no console
+     */
+    public void imprimir() {
+        if (isEmpty()) {
+            System.out.print("[]");
+            return;
+        }
+
+        System.out.print("[");
+        No<T> atual = primeiro;
+        while (atual != null) {
+            System.out.print(atual.dado);
+            if (atual.proximo != null) {
+                System.out.print(", ");
+            }
+            atual = atual.proximo;
+        }
+        System.out.print("]");
     }
 }
